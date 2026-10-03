@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tasks/task.css')}}">
+    <title>Task</title>
+</head>
+<body>
+    <main class="task-page">
+        
+        <header class="page-header">
+            <div>
+                <h1>Tasks List</h1>
+                <p>{{tasks|length}} Task</p>
+            </div>
+
+            <a href="{{ url_for('add_task')}}" class="btn-add"> + Add Task</a>
+        </header>
+
+        <div class="toolbar">
+
+            <input 
+            type="text"
+            placeholder="Search Tasks"
+            >
+            <div class="filter">
+                <form class="filter-form" method="get" action="{{ url_for('task') }}">
+
+                    <select name="status" id="status" onchange="this.form.submit()">
+                        {% for status in filter_data.filter_list.status %}
+                        <option
+                        value="{{ status }}"
+                        {% if filter_data.filter_state.status == status %}selected{% endif %}
+                        >{{ status|capitalize}}</option>
+                        {% endfor %}
+                    </select>
+                
+                    <select name="subject" id="subject" onchange="this.form.submit()">
+                        {% for subject in filter_data.filter_list.subject %}
+                        <option
+                        value="{{ subject }}"
+                        {% if filter_data.filter_state.subject == subject %}selected{% endif %}
+                        >{{ subject|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="deadline" id="deadline" onchange="this.form.submit()">
+                        {% for deadline in filter_data.filter_list.deadline %}
+                        <option
+                        value="{{ deadline }}"
+                        {% if filter_data.filter_state.deadline == deadline %}selected{% endif %}
+                        >{{ deadline|replace("_", " ")|title }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <section class="task-list">
+
+            {% for task in tasks %}
+            <div class="task-item">
+                <form method="post" action="{{ url_for('complete_task', id=task.id) }}">
+                    <input 
+                    type="checkbox"
+                    onchange="this.form.submit()"
+                    {% if task.status %}checked{% endif %}>
+                </form>
+
+                <div class="task-info">
+
+                    <h3>{{ task.title }}</h3>
+                    <p>
+                        {{ task.subject }}
+                        • {{ task.deadline}}
+                    </p>
+                    <p>
+                        {{ task.description }}
+                    </p>
+                </div>
+                <div class="task-actions">
+
+                    <a href="{{ url_for('edit_task', id=task.id)}}">Edit</a>
+
+                    <form method="post" action="{{ url_for('delete_task', id=task.id) }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

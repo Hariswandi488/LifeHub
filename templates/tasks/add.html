@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tasks/add.css')}}">
+    <title>Add Task</title>
+</head>
+<body>
+    <main class="add-page">
+        <form method="post" action="{{ url_for('add_task') }}">
+            <header class="page-header">
+
+                <div>
+                    <h1>Add Task</h1>
+                </div>
+            </header>
+
+            <div class="title-input">
+                <h3>Title</h3>
+                <input type="text" name="title" id="title" placeholder="Exercise">
+            </div>
+
+            <div class="subject-option">
+                <h3>Subject</h3>
+                <select name="subject" id="subject">
+                    <option value="Tugas">Tugas</option>
+                    <option value="Project">Project</option>
+                    <option value="Random">Random</option>
+                </select>
+            </div>
+
+            <div class="deadline">
+                <h3>Deadline</h3>
+                <input type="date" name="deadline" id="deadline">
+            </div>
+
+            <div class="description">
+                <h3>Description</h3>
+                <textarea placeholder="(optional)" name="description" id="description"></textarea>
+            </div>
+            <div class="submit-btn">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

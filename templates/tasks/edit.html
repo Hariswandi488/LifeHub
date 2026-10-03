@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tasks/edit.css')}}">
+    <title>Edit task</title>
+</head>
+<body>
+    <main class="edit-page">
+        <form method="post" action="{{ url_for('edit_task', id=task.id)}}">
+
+            <header class="page-header">
+                <h1>Edit tasks</h1>
+            </header>
+
+            <div class="title-input">
+                <h3>Title</h3>
+                <input 
+                    type="text"
+                    placeholder="{{ task.title}}" 
+                    value="{{ task.title }}"
+                    id="title"
+                    name="title">
+
+            </div>
+
+            <div class="subject-option">
+                <h3>Subject</h3>
+                <select name="subject" id="subject">
+                    {% for subject in subjects %}
+                        <option value="{{ subject }}" {% if task.subject == subject %}selected{% endif %}>{{ subject }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="deadline">
+                <h3>Deadline</h3>
+                <input 
+                    type="date"
+                    value="{{ task.deadline }}"
+                    name="deadline"
+                    id="deadline">
+            </div>
+
+            <div class="description">
+                <h3>Description</h3>
+                <textarea 
+                    placeholder="{{ task.description }}"
+                    name="description"
+                    id="description">{{ task.description }}</textarea>
+            </div>
+
+            <div class="save-btn">
+                <button type="submit">Save</button>
+            </div>
+
+        </form>
+    </main>
+</body>
+</html>
