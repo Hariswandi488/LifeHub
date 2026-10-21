@@ -8,6 +8,13 @@ __pycache__/
 # Environment / secrets
 .env
 
+# Database (data pribadi, jangan di-commit)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
 # OS
 .DS_Store
 Thumbs.db
+.secret_key

@@ -1,18 +1,7 @@
-body {
-    background: #14161a;
-    color: #e5e7eb;
-}
+.index-page { max-width: 800px; }
 
-.index-page {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 0 20px;
-    color: #e5e7eb;
-}
-
-.Title {
-    color: #f0f1f3;
-}
+.Title { color: var(--heading); margin-bottom: 4px; }
+.subtitle { margin: 0 0 24px; color: var(--muted); }
 
 .card-container {
     display: grid;
@@ -23,13 +12,46 @@ body {
 .card {
     padding: 20px;
     border-radius: 15px;
-    border: 1px solid #3a3f47;
-    background: #20242a;
-    color: #e5e7eb;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
 }
 
+.card-link {
+    text-decoration: none;
+    transition: transform 0.5s ease;
+}
+
+.card-link:hover { transform: translateY(-5px); background: #2c3138; }
+
+.card-label { margin: 0 0 8px; color: var(--muted); font-size: 0.85rem; }
+.card h2.big { margin: 0 0 6px; font-size: 1.3rem; color: var(--heading); }
+.card h2.big.neg { color: var(--expense); }
+.card-sub { margin: 0; color: var(--placeholder); font-size: 0.8rem; }
+.card .line { margin: 4px 0; font-weight: bold; }
+
+.section-title { margin: 32px 0 12px; color: var(--heading); font-size: 1.1rem; }
+
+.today-list { display: flex; flex-direction: column; gap: 10px; }
+
+.today-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+}
+
+.today-item form { margin: 0; }
+.today-info h3 { margin: 0 0 4px; font-size: 1rem; color: var(--heading); }
+.today-info p { margin: 0; font-size: 0.8rem; color: var(--muted); }
+.today-item.is-done { opacity: 0.55; }
+.today-item.is-done h3 { text-decoration: line-through; }
+
 .view-all-btn {
-    margin: 10px auto;
+    margin: 20px auto 10px;
     text-align: center;
     display: block;
     padding: 10px 25px;
@@ -37,12 +59,15 @@ body {
     color: #e5e7eb;
     border: 1px solid #3a3f47;
     border-radius: 25px;
-    justify-content: center;
-    box-sizing: border-box;
+    text-decoration: none;
     transition: transform 0.5s ease;
 }
 
 .view-all-btn:hover {
     transform: scale(1.05) translateY(-5px);
     background: #2c3138;
+}
+
+@media (max-width: 640px) {
+    .card-container { grid-template-columns: 1fr; }
 }

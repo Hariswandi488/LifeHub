@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Finance · LifeHub{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/finance/finance.css') }}">{% endblock %}
+{% block main_class %}finance-page{% endblock %}
+
+{% macro group_list(kind, data) %}
+<section class="column column-{{ kind }}">
+    <header class="column-header">
+        <div>
+            <h2>{{ types[kind] }}</h2>
+            <p class="column-total">{{ data.total|rupiah }}</p>
+        </div>
+        <a href="{{ url_for('finance_add', type=kind, next=request.full_path) }}" class="btn-small">+ Tambah</a>
+    </header>
+
+    {% for group in data.groups %}
+    <details class="group">
+        <summary>
+            <span class="g-name">{{ group.name }}</span>
+            <span class="g-count">{{ group.count }}x</span>
+            <span class="g-total">{{ group.total|rupiah }}</span>
+            <span class="g-bar"><span style="width: {{ group.share }}%"></span></span>
+        </summary>
+        <ul class="tx-list">
+            {% for tx in group.rows %}
+            <li class="tx">
+                <div class="tx-main">
+                    <span class="tx-date">{{ tx.date|fmt_date }}</span>
+                    {% if tx.note %}<span class="tx-note">{{ tx.note }}</span>{% endif %}
+                </div>
+                <span class="tx-amount">{{ tx.amount|rupiah }}</span>
+                <div class="tx-actions">
+                    <a href="{{ url_for('finance_edit', id=tx.id, next=request.full_path) }}">Edit</a>
+                    <form method="post" action="{{ url_for('finance_delete', id=tx.id) }}" onsubmit="return confirm('Hapus transaksi ini?')">
+                        <input type="hidden" name="next" value="{{ request.full_path }}">
+                        <button type="submit">Hapus</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </details>
+    {% else %}
+    <p class="empty">Belum ada {{ types[kind]|lower }} di periode ini.</p>
+    {% endfor %}
+</section>
+{% endmacro %}
+
+{% block content %}
+<header class="page-header">
+    <div>
+        <h1>Finance</h1>
+        <p>{{ count }} transaksi</p>
+    </div>
+    <a href="{{ url_for('finance_add', next=request.full_path) }}" class="btn-add">+ Add</a>
+</header>
+
+<section class="balance-card">
+    <p class="label">Uang saat ini</p>
+    <h2 class="{{ 'neg' if balance < 0 }}">{{ balance|rupiah }}</h2>
+</section>
+
+<section class="period-bar">
+    <div class="tabs">
+        {% for key, name in periods %}
+        <a href="{{ url_for('finance', period=key, date=anchor.isoformat()) }}" class="tab {{ 'active' if key == period }}">{{ name }}</a>
+        {% endfor %}
+    </div>
+
+    {% if period != 'all' %}
+    <div class="period-nav">
+        <a class="nav-btn" href="{{ url_for('finance', period=period, date=prev_anchor.isoformat()) }}" aria-label="Sebelumnya">‹</a>
+        <div class="period-label">
+            <strong>{{ label }}</strong>
+            {% if not is_current %}<a href="{{ url_for('finance', period=period) }}" class="today-link">Kembali ke sekarang</a>{% endif %}
+        </div>
+        <a class="nav-btn" href="{{ url_for('finance', period=period, date=next_anchor.isoformat()) }}" aria-label="Berikutnya">›</a>
+    </div>
+    <form method="get" action="{{ url_for('finance') }}" class="jump">
+        <input type="hidden" name="period" value="{{ period }}">
+        <input type="date" name="date" value="{{ anchor.isoformat() }}" onchange="this.form.submit()" aria-label="Lompat ke tanggal">
+    </form>
+    {% else %}
+    <div class="period-nav"><div class="period-label"><strong>{{ label }}</strong></div></div>
+    {% endif %}
+</section>
+
+<section class="summary">
+    <div class="summary-card">
+        <p class="label">Total pemasukan</p>
+        <h3 class="pos">{{ income.total|rupiah }}</h3>
+    </div>
+    <div class="summary-card">
+        <p class="label">Total pengeluaran</p>
+        <h3 class="neg">{{ expense.total|rupiah }}</h3>
+    </div>
+    <div class="summary-card">
+        <p class="label">Selisih</p>
+        <h3 class="{{ 'neg' if net < 0 else 'pos' }}">{{ net|rupiah }}</h3>
+    </div>
+</section>
+
+<div class="columns">
+    {{ group_list('income', income) }}
+    {{ group_list('expense', expense) }}
+</div>
+{% endblock %}
