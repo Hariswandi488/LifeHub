@@ -1,31 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
-    <title>Home</title>
-</head>
-<body>
-    <main class="index-page">
-        <h1 class="Title">
-            LifeHub
-        </h1>
+{% extends "base.html" %}
+{% block title %}Home · LifeHub{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">{% endblock %}
+{% block main_class %}index-page{% endblock %}
 
-        <div class="card-container"> 
-            
-            {% for task in tasks %}
-            <div class="card">
-                <h2>{{ task.title}}</h2>
-                <p>{{ task.subject}}</p>
-            </div>
-            {% endfor %}
+{% block content %}
+<h1 class="Title">LifeHub</h1>
+<p class="subtitle">{{ today_label }}</p>
 
+<div class="card-container">
+    <a href="{{ url_for('finance') }}" class="card card-link">
+        <p class="card-label">Uang saat ini</p>
+        <h2 class="big {{ 'neg' if balances.total < 0 }}">{{ balances.total|rupiah }}</h2>
+        <p class="card-sub">Saku <strong class="{{ 'neg' if balances.saku < 0 }}">{{ balances.saku|rupiah }}</strong></p>
+        <p class="card-sub">Simpanan <strong class="{{ 'neg' if balances.simpanan < 0 }}">{{ balances.simpanan|rupiah }}</strong></p>
+    </a>
+
+    <a href="{{ url_for('finance', period='month') }}" class="card card-link">
+        <p class="card-label">Bulan ini</p>
+        <p class="line"><span class="pos">+ {{ month_income|rupiah }}</span></p>
+        <p class="line"><span class="neg">- {{ month_expense|rupiah }}</span></p>
+    </a>
+
+    <a href="{{ url_for('task', deadline='today') }}" class="card card-link">
+        <p class="card-label">Todo hari ini</p>
+        <h2 class="big">{{ done_count }}/{{ todos|length }} selesai</h2>
+        <p class="card-sub">
+            {% if overdue_count %}<span class="neg">{{ overdue_count }} terlambat</span>{% else %}Tidak ada yang terlambat{% endif %}
+        </p>
+    </a>
+</div>
+
+<h2 class="section-title">Hari ini</h2>
+<div class="today-list">
+    {% for task in todos %}
+    <div class="today-item {{ 'is-done' if task.done }}">
+        <form method="post" action="{{ url_for('complete_task', id=task.id) }}">
+            <input type="hidden" name="next" value="{{ request.full_path }}">
+            <input type="checkbox" onchange="this.form.submit()" {% if task.done %}checked{% endif %} aria-label="Selesai">
+        </form>
+        <div class="today-info">
+            <h3>{{ task.title }}{% if task.is_overdue %} <span class="badge badge-late">Terlambat</span>{% endif %}</h3>
+            <p>{{ task.subject|capitalize }} • {{ task.schedule_label }}</p>
         </div>
-        
-        <a href="{{ url_for('task')}}" class="view-all-btn">
-            View All
-        </a>
-    </main>
-</body>
-</html>
+    </div>
+    {% else %}
+    <p class="empty">Tidak ada todo untuk hari ini.</p>
+    {% endfor %}
+</div>
+
+<a href="{{ url_for('task') }}" class="view-all-btn">View All</a>
+{% endblock %}

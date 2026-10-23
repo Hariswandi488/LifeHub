@@ -1,0 +1,253 @@
+.finance-page { max-width: 1000px; }
+
+.label { margin: 0 0 6px; color: var(--muted); font-size: 0.85rem; }
+
+.balance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.balance-total {
+    grid-column: 1 / -1;
+    margin: 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+.balance-total strong { color: var(--heading); }
+.balance-total strong.neg { color: var(--expense); }
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+
+.balance-card {
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.balance-card h2 { margin: 0; font-size: 1.7rem; color: var(--heading); overflow-wrap: anywhere; }
+.balance-card .label small { color: var(--placeholder); }
+.balance-card h2.neg { color: var(--expense); }
+
+/* ---------- filter periode ---------- */
+.period-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--field);
+    border: 1px solid var(--border);
+    border-radius: 25px;
+}
+
+.tab {
+    padding: 7px 16px;
+    border-radius: 25px;
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.tab:hover { color: var(--text); }
+.tab.active { background: var(--accent); color: var(--accent-text); font-weight: bold; }
+
+.period-nav { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: center; }
+
+.nav-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--field);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.nav-btn:hover { background: #2c3138; }
+
+.period-label { min-width: 170px; text-align: center; color: var(--heading); }
+.period-label strong { display: block; }
+.today-link { font-size: 0.75rem; color: var(--muted); }
+
+.jump { margin: 0; }
+
+.jump input {
+    padding: 8px 12px;
+    background: var(--field);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    font-family: inherit;
+}
+
+.jump input::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+
+/* ---------- ringkasan ---------- */
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.summary-card {
+    padding: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+}
+
+.summary-card h3 { margin: 0; font-size: 1.15rem; overflow-wrap: anywhere; }
+
+/* ---------- kolom pemasukan / pengeluaran ---------- */
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.column-header h2 { margin: 0; font-size: 1.1rem; color: var(--heading); }
+.column-total { margin: 4px 0 0; font-weight: bold; }
+.column-income .column-total { color: var(--income); }
+.column-expense .column-total { color: var(--expense); }
+
+.btn-small {
+    padding: 7px 12px;
+    background: #2b3037;
+    color: #e4e6e9;
+    border: 1px solid #484e57;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.btn-small:hover { background: #373d46; }
+
+.group {
+    margin-bottom: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.group summary {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 4px 12px;
+    align-items: center;
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.group summary::-webkit-details-marker { display: none; }
+.group summary:hover { background: #262b32; }
+
+.g-name { font-weight: bold; color: var(--heading); overflow-wrap: anywhere; }
+.g-count { color: var(--placeholder); font-size: 0.8rem; }
+.g-total { font-weight: bold; }
+.column-income .g-total { color: var(--income); }
+.column-expense .g-total { color: var(--expense); }
+
+.g-bar {
+    grid-column: 1 / -1;
+    height: 4px;
+    background: var(--field);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.g-bar span { display: block; height: 100%; border-radius: 4px; }
+.column-income .g-bar span { background: var(--income); }
+.column-expense .g-bar span { background: var(--expense); }
+
+.tx-list { list-style: none; margin: 0; padding: 0 16px 8px; border-top: 1px solid var(--border); }
+
+.tx {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #2b3037;
+    font-size: 0.85rem;
+}
+
+.tx:last-child { border-bottom: none; }
+.tx-main { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tx-date { color: var(--text); }
+.tx-note { color: var(--placeholder); overflow-wrap: anywhere; }
+.tx-amount { font-weight: bold; white-space: nowrap; }
+
+.tx-actions { display: flex; gap: 6px; }
+.tx-actions form { margin: 0; }
+
+.tx-actions a,
+.tx-actions button {
+    padding: 5px 9px;
+    background: #2b3037;
+    color: #e4e6e9;
+    border: 1px solid #484e57;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.tx-actions a:hover,
+.tx-actions button:hover { background: #373d46; }
+
+/* ---------- filter kantong, badge, perpindahan dana ---------- */
+.bucket-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.bucket-bar-label { color: var(--muted); font-size: 0.85rem; }
+
+.bucket-badge {
+    margin-left: 6px;
+    padding: 1px 7px;
+    font-size: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    color: var(--muted);
+}
+
+.bucket-simpanan { color: var(--warn); border-color: var(--warn); }
+
+.transfers { margin-top: 28px; }
+.column-total.muted { color: var(--muted); font-weight: normal; font-size: 0.85rem; }
+
+.transfer-list {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 0 16px;
+}
+
+@media (max-width: 720px) {
+    .balance-card h2 { font-size: 1.15rem; }
+    .balance-card { padding: 14px; }
+    .bucket-bar { flex-wrap: wrap; }
+    .columns { grid-template-columns: 1fr; }
+    .summary { grid-template-columns: 1fr; }
+    .period-bar { flex-direction: column; align-items: stretch; }
+    .tabs { justify-content: space-between; }
+    .tab { flex: 1; text-align: center; }
+    .jump input { width: 100%; }
+}

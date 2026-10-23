@@ -1,95 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tasks/task.css')}}">
-    <title>Task</title>
-</head>
-<body>
-    <main class="task-page">
-        
-        <header class="page-header">
-            <div>
-                <h1>Tasks List</h1>
-                <p>{{tasks|length}} Task</p>
-            </div>
+{% extends "base.html" %}
+{% block title %}Task · LifeHub{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/tasks/task.css') }}">{% endblock %}
+{% block main_class %}task-page{% endblock %}
 
-            <a href="{{ url_for('add_task')}}" class="btn-add"> + Add Task</a>
-        </header>
+{% block content %}
+<header class="page-header">
+    <div>
+        <h1>Tasks List</h1>
+        <p>{{ tasks|length }} Task</p>
+    </div>
+    <a href="{{ url_for('add_task') }}" class="btn-add">+ Add Task</a>
+</header>
 
-        <div class="toolbar">
+<div class="toolbar">
+    <form class="filter-form" method="get" action="{{ url_for('task') }}">
+        <input type="text" name="q" value="{{ q }}" placeholder="Search Tasks" class="search">
 
-            <input 
-            type="text"
-            placeholder="Search Tasks"
-            >
-            <div class="filter">
-                <form class="filter-form" method="get" action="{{ url_for('task') }}">
+        <select name="status" onchange="this.form.submit()" aria-label="Status">
+            {% for status in filter_list.status %}
+            <option value="{{ status }}" {% if filters.status == status %}selected{% endif %}>{{ status|capitalize }}</option>
+            {% endfor %}
+        </select>
 
-                    <select name="status" id="status" onchange="this.form.submit()">
-                        {% for status in filter_data.filter_list.status %}
-                        <option
-                        value="{{ status }}"
-                        {% if filter_data.filter_state.status == status %}selected{% endif %}
-                        >{{ status|capitalize}}</option>
-                        {% endfor %}
-                    </select>
-                
-                    <select name="subject" id="subject" onchange="this.form.submit()">
-                        {% for subject in filter_data.filter_list.subject %}
-                        <option
-                        value="{{ subject }}"
-                        {% if filter_data.filter_state.subject == subject %}selected{% endif %}
-                        >{{ subject|capitalize }}</option>
-                        {% endfor %}
-                    </select>
+        <select name="subject" onchange="this.form.submit()" aria-label="Subject">
+            {% for subject in filter_list.subject %}
+            <option value="{{ subject }}" {% if filters.subject == subject %}selected{% endif %}>{{ subject|capitalize }}</option>
+            {% endfor %}
+        </select>
 
-                    <select name="deadline" id="deadline" onchange="this.form.submit()">
-                        {% for deadline in filter_data.filter_list.deadline %}
-                        <option
-                        value="{{ deadline }}"
-                        {% if filter_data.filter_state.deadline == deadline %}selected{% endif %}
-                        >{{ deadline|replace("_", " ")|title }}</option>
-                        {% endfor %}
-                    </select>
-                </form>
-            </div>
+        <select name="type" onchange="this.form.submit()" aria-label="Tipe">
+            {% for kind in filter_list.type %}
+            <option value="{{ kind }}" {% if filters.type == kind %}selected{% endif %}>{{ type_labels[kind] }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="deadline" onchange="this.form.submit()" aria-label="Deadline">
+            {% for deadline in filter_list.deadline %}
+            <option value="{{ deadline }}" {% if filters.deadline == deadline %}selected{% endif %}>{{ deadline|replace("_", " ")|title }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    {% if has_filters %}<a href="{{ url_for('task') }}" class="reset-link">Reset filter</a>{% endif %}
+</div>
+
+<section class="task-list">
+    {% for task in tasks %}
+    <div class="task-item {{ 'is-done' if task.done }}">
+        <form method="post" action="{{ url_for('complete_task', id=task.id) }}">
+            <input type="hidden" name="next" value="{{ request.full_path }}">
+            <input type="checkbox" onchange="this.form.submit()" {% if task.done %}checked{% endif %} aria-label="Selesai">
+        </form>
+
+        <div class="task-info">
+            <h3>
+                {{ task.title }}
+                {% if task.is_overdue %}<span class="badge badge-late">Terlambat</span>{% endif %}
+                {% if task.repeat_type != 'once' %}<span class="badge">Berulang</span>{% endif %}
+            </h3>
+            <p>{{ task.subject|capitalize }} • {{ task.schedule_label }}</p>
+            {% if task.description %}<p>{{ task.description }}</p>{% endif %}
         </div>
 
-        <section class="task-list">
-
-            {% for task in tasks %}
-            <div class="task-item">
-                <form method="post" action="{{ url_for('complete_task', id=task.id) }}">
-                    <input 
-                    type="checkbox"
-                    onchange="this.form.submit()"
-                    {% if task.status %}checked{% endif %}>
-                </form>
-
-                <div class="task-info">
-
-                    <h3>{{ task.title }}</h3>
-                    <p>
-                        {{ task.subject }}
-                        • {{ task.deadline}}
-                    </p>
-                    <p>
-                        {{ task.description }}
-                    </p>
-                </div>
-                <div class="task-actions">
-
-                    <a href="{{ url_for('edit_task', id=task.id)}}">Edit</a>
-
-                    <form method="post" action="{{ url_for('delete_task', id=task.id) }}">
-                        <button type="submit">Delete</button>
-                    </form>
-                </div>
-            </div>
-            {% endfor %}
-        </section>
-    </main>
-</body>
-</html>
+        <div class="task-actions">
+            <a href="{{ url_for('edit_task', id=task.id, next=request.full_path) }}">Edit</a>
+            <form method="post" action="{{ url_for('delete_task', id=task.id) }}" onsubmit="return confirm('Hapus task ini?')">
+                <input type="hidden" name="next" value="{{ request.full_path }}">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <p class="empty">{% if has_filters %}Tidak ada task yang cocok dengan filter.{% else %}Belum ada task. Klik "+ Add Task" untuk mulai.{% endif %}</p>
+    {% endfor %}
+</section>
+{% endblock %}

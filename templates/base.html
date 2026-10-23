@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block head %}{% endblock %}
+    <title>{% block title %}LifeHub{% endblock %}</title>
+</head>
+<body>
+    {% block nav %}
+    {% set ep = request.endpoint or '' %}
+    <nav class="topnav">
+        <a href="{{ url_for('home') }}" class="brand">LifeHub</a>
+        <div class="nav-links">
+            <a href="{{ url_for('task') }}" class="{{ 'active' if ep in ('task', 'add_task', 'edit_task') }}">Todo</a>
+            <a href="{{ url_for('finance') }}" class="{{ 'active' if ep.startswith('finance') }}">Finance</a>
+        </div>
+        {% if current_user %}
+        <span class="nav-user">{{ current_user.username }}</span>
+        <form method="post" action="{{ url_for('logout') }}" class="nav-logout-form">
+            <button type="submit" class="nav-logout">Logout</button>
+        </form>
+        {% endif %}
+    </nav>
+    {% endblock %}
+
+    <main class="container {% block main_class %}{% endblock %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flashes">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

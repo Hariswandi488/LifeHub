@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit Transaksi' if mode == 'edit' else 'Add Transaksi' }} · LifeHub{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">{% endblock %}
+{% block main_class %}narrow{% endblock %}
+
+{% block content %}
+<form method="post" class="form-page"
+      action="{{ url_for('finance_edit', id=tx.id) if mode == 'edit' else url_for('finance_add') }}">
+    <header class="page-header"><h1>{{ 'Edit Transaksi' if mode == 'edit' else 'Add Transaksi' }}</h1></header>
+    <input type="hidden" name="next" value="{{ next_url }}">
+
+    <div class="field">
+        <div class="type-toggle">
+            {% for key, label in types.items() %}
+            <label class="type-{{ key }}">
+                <input type="radio" name="type" value="{{ key }}" {% if tx.type == key %}checked{% endif %}>
+                <span>{{ label }}</span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="field">
+        <h3 id="bucket-label">{{ 'Masuk ke' if tx.type == 'income' else 'Diambil dari' }}</h3>
+        <div class="bucket-toggle">
+            {% for key, label in buckets.items() %}
+            <label>
+                <input type="radio" name="bucket" value="{{ key }}" {% if tx.bucket == key %}checked{% endif %}>
+                <span>{{ label }}</span>
+            </label>
+            {% endfor %}
+        </div>
+        <p class="hint">Saku = bisa dipakai langsung. Simpanan = tidak dipakai langsung.</p>
+    </div>
+
+    <div class="field">
+        <h3>Nama</h3>
+        <input type="text" name="name" id="name" value="{{ tx.name }}" placeholder="Gaji, Makan, Bensin" maxlength="60" autocomplete="off" required>
+        {% for key in types %}
+        <datalist id="names-{{ key }}">
+            {% for n in names[key] %}<option value="{{ n }}">{% endfor %}
+        </datalist>
+        {% endfor %}
+    </div>
+
+    <div class="field">
+        <h3>Nominal (Rp)</h3>
+        <input type="text" name="amount" id="amount" value="{{ tx.amount }}" placeholder="25000" inputmode="numeric" required>
+    </div>
+
+    <div class="field">
+        <h3>Tanggal</h3>
+        <input type="date" name="date" id="date" value="{{ tx.date }}" required>
+    </div>
+
+    <div class="field">
+        <h3>Catatan <small>(opsional)</small></h3>
+        <input type="text" name="note" id="note" value="{{ tx.note }}" maxlength="200">
+    </div>
+
+    <div class="submit-btn">
+        <button type="submit">{{ 'Save' if mode == 'edit' else 'Submit' }}</button>
+    </div>
+    <a href="{{ next_url or url_for('finance') }}" class="cancel-link">Batal</a>
+</form>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/finance_form.js') }}"></script>{% endblock %}
