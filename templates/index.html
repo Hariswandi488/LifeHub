@@ -6,14 +6,6 @@
 {% block content %}
 <h1 class="Title">LifeHub</h1>
 <p class="subtitle">{{ today_label }}</p>
-{% extends "base.html" %}
-{% block title %}Home · LifeHub{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">{% endblock %}
-{% block main_class %}index-page{% endblock %}
-
-{% block content %}
-<h1 class="Title">LifeHub</h1>
-<p class="subtitle">{{ today_label }}</p>
 
 <div class="card-container">
     <a href="{{ url_for('finance') }}" class="card card-link">
@@ -33,7 +25,11 @@
         <p class="card-label">Todo hari ini</p>
         <h2 class="big">{{ done_count }}/{{ todos|length }} selesai</h2>
         <p class="card-sub">
-            {% if overdue_count %}<span class="neg">{{ overdue_count }} terlambat</span>{% else %}Tidak ada yang terlambat{% endif %}
+            {% if overdue_count %}
+                <span class="neg">{{ overdue_count }} terlambat</span>
+            {% else %}
+                Tidak ada yang terlambat
+            {% endif %}
         </p>
     </a>
 </div>
@@ -46,19 +42,11 @@
             <input type="hidden" name="next" value="{{ request.full_path }}">
             <input type="checkbox" onchange="this.form.submit()" {% if task.done %}checked{% endif %} aria-label="Selesai">
         </form>
+
         <div class="today-info">
             <h3>{{ task.title }}{% if task.is_overdue %} <span class="badge badge-late">Terlambat</span>{% endif %}</h3>
             <p>{{ task.subject|capitalize }} • {{ task.schedule_label }}</p>
         </div>
-    </div>
-    {% else %}
-    <p class="empty">Tidak ada todo untuk hari ini.</p>
-    {% endfor %}
-</div>
-
-<a href="{{ url_for('task') }}" class="view-all-btn">View All</a>
-{% endblock %}
-
     </div>
     {% else %}
     <p class="empty">Tidak ada todo untuk hari ini.</p>
