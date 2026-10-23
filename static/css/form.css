@@ -126,7 +126,6 @@
 .field input[type="password"],
 .field input[type="text"].auth-input { padding: 10px 12px; }
 .field .hint { margin: 6px 0 0; color: var(--placeholder); font-size: 0.8rem; }
-<<<<<<< HEAD
 
 /* pilihan kantong / arah perpindahan */
 .bucket-toggle { display: flex; gap: 10px; }
@@ -154,5 +153,3 @@
 
 .balance-hint { margin: 0 0 20px; text-align: center; color: var(--muted); }
 .balance-hint strong { color: var(--heading); }
-=======
->>>>>>> f66358b057235f05d7b590d5aa7a1cf56196bf73

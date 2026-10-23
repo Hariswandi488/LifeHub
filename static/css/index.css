@@ -71,9 +71,6 @@
 @media (max-width: 640px) {
     .card-container { grid-template-columns: 1fr; }
 }
-<<<<<<< HEAD
 
 .card-sub strong { color: var(--text); }
 .card-sub strong.neg { color: var(--expense); }
-=======
->>>>>>> f66358b057235f05d7b590d5aa7a1cf56196bf73
