@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # Kode undangan (opsional). Kalau LIFEHUB_INVITE_CODE diisi, hanya yang tahu kodenya
 # yang bisa membuat akun. Disarankan diisi di hosting supaya tidak sembarang orang daftar.
-INVITE_CODE = os.environ.get("CIHUUYYY", "")
+INVITE_CODE = os.environ.get("LIFEHUB_INVITE_CODE", "")
 
 app.secret_key = auth.load_secret_key()
 app.config.update(

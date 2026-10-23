@@ -2,6 +2,7 @@
 
 .label { margin: 0 0 6px; color: var(--muted); font-size: 0.85rem; }
 
+<<<<<<< HEAD
 .balance-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -23,14 +24,23 @@
 
 .balance-card {
     padding: 20px;
+=======
+.balance-card {
+    padding: 20px;
+    margin-bottom: 20px;
+>>>>>>> f66358b057235f05d7b590d5aa7a1cf56196bf73
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 15px;
     text-align: center;
 }
 
+<<<<<<< HEAD
 .balance-card h2 { margin: 0; font-size: 1.7rem; color: var(--heading); overflow-wrap: anywhere; }
 .balance-card .label small { color: var(--placeholder); }
+=======
+.balance-card h2 { margin: 0; font-size: 2rem; color: var(--heading); }
+>>>>>>> f66358b057235f05d7b590d5aa7a1cf56196bf73
 .balance-card h2.neg { color: var(--expense); }
 
 /* ---------- filter periode ---------- */
@@ -215,6 +225,7 @@
 .tx-actions a:hover,
 .tx-actions button:hover { background: #373d46; }
 
+<<<<<<< HEAD
 /* ---------- filter kantong, badge, perpindahan dana ---------- */
 .bucket-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
 .bucket-bar-label { color: var(--muted); font-size: 0.85rem; }
@@ -244,6 +255,9 @@
     .balance-card h2 { font-size: 1.15rem; }
     .balance-card { padding: 14px; }
     .bucket-bar { flex-wrap: wrap; }
+=======
+@media (max-width: 720px) {
+>>>>>>> f66358b057235f05d7b590d5aa7a1cf56196bf73
     .columns { grid-template-columns: 1fr; }
     .summary { grid-template-columns: 1fr; }
     .period-bar { flex-direction: column; align-items: stretch; }

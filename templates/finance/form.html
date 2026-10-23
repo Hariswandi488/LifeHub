@@ -21,6 +21,7 @@
     </div>
 
     <div class="field">
+<<<<<<< HEAD
         <h3 id="bucket-label">{{ 'Masuk ke' if tx.type == 'income' else 'Diambil dari' }}</h3>
         <div class="bucket-toggle">
             {% for key, label in buckets.items() %}
@@ -34,6 +35,8 @@
     </div>
 
     <div class="field">
+=======
+>>>>>>> f66358b057235f05d7b590d5aa7a1cf56196bf73
         <h3>Nama</h3>
         <input type="text" name="name" id="name" value="{{ tx.name }}" placeholder="Gaji, Makan, Bensin" maxlength="60" autocomplete="off" required>
         {% for key in types %}

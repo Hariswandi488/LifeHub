@@ -6,6 +6,14 @@
 {% block content %}
 <h1 class="Title">LifeHub</h1>
 <p class="subtitle">{{ today_label }}</p>
+{% extends "base.html" %}
+{% block title %}Home · LifeHub{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">{% endblock %}
+{% block main_class %}index-page{% endblock %}
+
+{% block content %}
+<h1 class="Title">LifeHub</h1>
+<p class="subtitle">{{ today_label }}</p>
 
 <div class="card-container">
     <a href="{{ url_for('finance') }}" class="card card-link">
@@ -42,6 +50,15 @@
             <h3>{{ task.title }}{% if task.is_overdue %} <span class="badge badge-late">Terlambat</span>{% endif %}</h3>
             <p>{{ task.subject|capitalize }} • {{ task.schedule_label }}</p>
         </div>
+    </div>
+    {% else %}
+    <p class="empty">Tidak ada todo untuk hari ini.</p>
+    {% endfor %}
+</div>
+
+<a href="{{ url_for('task') }}" class="view-all-btn">View All</a>
+{% endblock %}
+
     </div>
     {% else %}
     <p class="empty">Tidak ada todo untuk hari ini.</p>
